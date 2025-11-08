@@ -1,0 +1,7 @@
+django>=4.2
+djangorestframework
+celery
+redis
+pandas
+scikit-learn
+requests
