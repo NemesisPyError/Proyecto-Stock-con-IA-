@@ -1,0 +1,15 @@
+<!-- Plantilla HTML que muestra el resumen del agente IA con métricas clave del sistema. -->
+<!-- Se integra con el panel admin y permite visualizar productos críticos y solicitudes. -->
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>📊 Resumen del Agente IA</h1>
+<div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+  <div><strong>📦 Productos totales:</strong> {{ total_productos }}</div>
+  <div><strong>🟥 Productos con stock bajo:</strong> {{ stock_bajo }}</div>
+  <div><strong>📋 Solicitudes totales:</strong> {{ solicitudes_total }}</div>
+  <div><strong>⏳ Pendientes:</strong> {{ pendientes }}</div>
+  <div><strong>✅ Aprobadas:</strong> {{ aprobadas }}</div>
+  <div><strong>📬 Entregadas:</strong> {{ entregadas }}</div>
+  <div><strong>❌ Rechazadas:</strong> {{ rechazadas }}</div>
+</div>
+{% endblock %}

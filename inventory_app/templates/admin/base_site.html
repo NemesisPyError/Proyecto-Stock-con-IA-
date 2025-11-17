@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1> Resumen del Agente IA</h1>
+<ul>
+  <li>📦 Productos totales: {{ total_productos }}</li>
+  <li>🟥 Productos con stock bajo: {{ stock_bajo }}</li>
+  <li>📋 Solicitudes totales: {{ solicitudes_total }}</li>
+  <li>⏳ Pendientes: {{ pendientes }}</li>
+  <li>✅ Aprobadas: {{ aprobadas }}</li>
+</ul>
+{% endblock %}

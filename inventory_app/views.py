@@ -5,6 +5,9 @@ from .models import Product, Warehouse, Inventory, StockMovement, ProductRequest
 from .serializers import ProductSerializer, WarehouseSerializer, InventorySerializer, StockMovementSerializer, ProductRequestSerializer
 from django.db.models import F
 
+# Aquí se pueden definir vistas adicionales para usuarios no técnicos o para mostrar reportes fuera del admin.
+# Ideal para crear interfaces más visuales o públicas.
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -30,3 +33,4 @@ class StockMovementViewSet(viewsets.ModelViewSet):
 class ProductRequestViewSet(viewsets.ModelViewSet):
     queryset = ProductRequest.objects.all().order_by("-created_at")
     serializer_class = ProductRequestSerializer
+

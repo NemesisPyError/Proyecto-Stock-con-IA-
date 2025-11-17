@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Script principal para ejecutar comandos de Django como runserver, makemigrations, migrate, etc.
+# Punto de entrada para la gestión del proyecto desde la terminal.
 """Django's command-line utility for administrative tasks."""
 import os
 import sys

@@ -1,0 +1,23 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+/static/
+media/
+.env
+
+# VS Code
+.vscode/
+
+# Python
+*.log
+*.pot
+*.py[cod]
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Entorno virtual
+venv/
+env/

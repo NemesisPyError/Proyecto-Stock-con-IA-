@@ -5,3 +5,6 @@ redis
 pandas
 scikit-learn
 requests
+
+# Lista de dependencias necesarias para ejecutar el proyecto (Django, PyMySQL, etc.).
+# Útil para instalar todo rápidamente con pip install -r requirements.txt
