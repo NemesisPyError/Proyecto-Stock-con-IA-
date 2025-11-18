@@ -3,7 +3,11 @@ from .models import Product, Warehouse, Inventory, StockMovement, ProductRequest
 from .llm_agent import revisar_stock_y_generar_solicitudes, aprobar_solicitudes_automaticamente
 from django.utils.html import format_html
 from django.urls import reverse
+from django.contrib import admin
 
+admin.site.site_header = "Autoservice Los Hermanos"
+admin.site.site_title = "Autoservice Los Hermanos"
+admin.site.index_title = "Panel de Administración"
 # Personaliza el panel de administración de Django para cada modelo.
 # Agrega acciones personalizadas como “Ejecutar agente IA” y muestra el estado del stock con íconos o etiquetas.
 
