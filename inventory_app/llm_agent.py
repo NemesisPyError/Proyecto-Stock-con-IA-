@@ -1,43 +1,40 @@
-from inventory_app.models import Inventory, ProductRequest
+# llm_agent.py
+from .models import Inventory, ProductRequest
 from django.db.models import F
-from inventory_app.models import ProductRequest, Inventory
 
-# Contiene la lógica del agente IA que revisa el stock, genera solicitudes de reposición y aprueba automáticamente si hay stock suficiente.
-# Este archivo permite automatizar decisiones operativas sin intervención humana.
 def revisar_stock_y_generar_solicitudes():
-    inventarios_bajos = Inventory.objects.filter(quantity__lte=F("product__reorder_point"))
-    
-    for inv in inventarios_bajos:
-        ya_existe = ProductRequest.objects.filter(
+    """Crea solicitudes automáticas para productos con stock bajo."""
+    creadas = 0
+    productos_criticos = Inventory.objects.filter(quantity__lte=F('product__reorder_point'))
+    for inv in productos_criticos:
+        # Evitar duplicados
+        if not ProductRequest.objects.filter(
             product=inv.product,
             warehouse=inv.warehouse,
-            status="PENDING"
-        ).exists()
-
-        if not ya_existe:
+            status__in=["Pendiente", None]
+        ).exists():
             ProductRequest.objects.create(
                 product=inv.product,
                 warehouse=inv.warehouse,
                 quantity_requested=inv.product.reorder_quantity,
-                requested_by="Agente IA",
-                status="PENDING"
+                status="Pendiente",
+                requested_by="Agente IA"
             )
-            print(f"🧠 Solicitud creada: {inv.product.name} en {inv.warehouse.name}")
-        else:
-            print(f"🔎 Ya existe solicitud pendiente para {inv.product.name} en {inv.warehouse.name}")
-
-
+            creadas += 1
+    return creadas
 
 def aprobar_solicitudes_automaticamente():
-    solicitudes = ProductRequest.objects.filter(status="PENDING")
+    """Aprueba automáticamente las solicitudes pendientes si hay stock suficiente."""
+    aprobadas = 0
+    # Considera Pendiente o null
+    solicitudes = ProductRequest.objects.filter(status__in=["Pendiente", None])
     for s in solicitudes:
-        try:
-            inv = Inventory.objects.get(product=s.product, warehouse=s.warehouse)
-            if inv.quantity >= s.quantity_requested:
-                s.status = "APPROVED"
-                s.save()
-                print(f"✅ Solicitud aprobada: {s.product.name} en {s.warehouse.name}")
-            else:
-                print(f"⛔ No hay stock suficiente para {s.product.name} en {s.warehouse.name}")
-        except Inventory.DoesNotExist:
-            print(f"❌ No hay inventario para {s.product.name} en {s.warehouse.name}")
+        inv = Inventory.objects.filter(product=s.product, warehouse=s.warehouse).first()
+        if inv and s.quantity_requested <= inv.quantity:
+            s.status = "Aprobada"
+            s.save()
+            # Restar del inventario
+            inv.quantity -= s.quantity_requested
+            inv.save()
+            aprobadas += 1
+    return aprobadas
